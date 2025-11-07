@@ -1,0 +1,62 @@
+# read in playerRound.csv in .empirica folder, and classify strategy of each player
+import pandas as pd
+# print current directory
+n_rounds = 5
+with open("./results/playerRound.csv", "r") as f:
+    df = pd.read_csv(f)
+df =df.sort_values(
+        by=["gameID", "playerID","decisionLastChangedAt"] # although player ID should just be alternating.
+    ).reset_index(drop=True)[["decision", "gameID", "playerID"]]
+
+def classify_strategy(pair_choice_seq):
+    strat_table = {"alternating":0, "stable_orange":0, "stable_purple":0, "other":0}
+
+    if len(pair_choice_seq) != 2*n_rounds:
+        return print("Error: length of pair_choice_seq is not equal to 2*n_rounds")
+    choice_relationship = [None] * (n_rounds-1)
+    for i in range(n_rounds-1):
+        p1_choice = pair_choice_seq[i]
+        p2_choice = pair_choice_seq[i+n_rounds]
+        next_p1_choice = pair_choice_seq[i+1]
+        next_p2_choice = pair_choice_seq[i+n_rounds+1]
+        if p1_choice == next_p1_choice and p2_choice == next_p2_choice:
+            if {p1_choice,p2_choice}== {"C","D"}:
+                choice_relationship[i] = "stable_purple"
+            if {p1_choice,p2_choice}== {"A","B"}:
+                choice_relationship[i] = "stable_orange"
+        elif p1_choice == next_p2_choice and p2_choice == next_p1_choice:
+            choice_relationship[i] = "alternating"
+        else:
+            choice_relationship[i] = "other"
+    # find longest consecutive common strategy in choice_relationship
+    count = 1
+    strat = choice_relationship[0]
+    for i in range(1, len(choice_relationship)):
+        if choice_relationship[i] == strat:
+            count += 1
+        else:
+            if count > strat_table[strat]:
+                strat_table[strat] = count
+            strat = choice_relationship[i]
+            count = 1
+    if count > strat_table[strat]:
+        strat_table[strat] = count
+    max_value = max(strat_table.values())
+    return [k for k, v in strat_table.items() if v == max_value]
+
+# split df by each gameID
+
+count_strat = {"alternating":0, "stable_orange":0, "stable_purple":0, "other":0}
+for game in df["gameID"].unique():
+    df_game = df[df["gameID"]==game]
+    pair_choice_seq = df_game["decision"].tolist()
+    strat = classify_strategy(pair_choice_seq)
+    print(f"gameID: {game}, strategy: {strat}")
+    if strat is None:
+        continue
+    for s in strat:
+        count_strat[s] = count_strat[s] + 1/len(strat)
+print("Overall strategy count:")
+print(count_strat)
+
+    
