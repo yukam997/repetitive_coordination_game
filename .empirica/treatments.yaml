@@ -1,0 +1,20 @@
+factors:
+  - desc: playerCount determines the number of Players are in a Game.
+    name: playerCount
+    values:
+      - value: 2
+  - desc: rounds
+    name: rounds
+    values:
+      - value: 5
+  - desc: hasChat
+    name: hasChat
+    values:
+      - value: false
+treatments:
+  - desc: "baseline"
+    factors:
+      playerCount: 2
+      rounds: 5
+      hasChat: false
+    name: baseline
