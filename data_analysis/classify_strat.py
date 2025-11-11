@@ -1,13 +1,17 @@
-# read in playerRound.csv in .empirica folder, and classify strategy of each player
+""" read in playerRound.csv in .empirica folder, and classify strategy of each player
+"""
+
 import pandas as pd
-# print current directory
-n_rounds = 5
+n_rounds = 13
+
+# read in playerRound.csv and filter to only relevant columns
 with open("./results/playerRound.csv", "r") as f:
     df = pd.read_csv(f)
 df =df.sort_values(
         by=["gameID", "playerID","decisionLastChangedAt"] # although player ID should just be alternating.
     ).reset_index(drop=True)[["decision", "gameID", "playerID"]]
 
+# function to output strategy given the dyad's sequence of choices
 def classify_strategy(pair_choice_seq):
     strat_table = {"alternating":0, "stable_orange":0, "stable_purple":0, "other":0}
 
@@ -44,9 +48,10 @@ def classify_strategy(pair_choice_seq):
     max_value = max(strat_table.values())
     return [k for k, v in strat_table.items() if v == max_value]
 
-# split df by each gameID
+# count frequency of each strategy across all games
 
 count_strat = {"alternating":0, "stable_orange":0, "stable_purple":0, "other":0}
+
 for game in df["gameID"].unique():
     df_game = df[df["gameID"]==game]
     pair_choice_seq = df_game["decision"].tolist()
@@ -56,6 +61,7 @@ for game in df["gameID"].unique():
         continue
     for s in strat:
         count_strat[s] = count_strat[s] + 1/len(strat)
+
 print("Overall strategy count:")
 print(count_strat)
 

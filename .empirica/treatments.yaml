@@ -6,7 +6,7 @@ factors:
   - desc: numRounds
     name: numRounds
     values:
-      - value: 5
+      - value: 13
   - desc: hasChat
     name: hasChat
     values:
@@ -15,6 +15,6 @@ treatments:
   - desc: "baseline"
     factors:
       playerCount: 2
-      numRounds: 5
+      numRounds: 13
       hasChat: false
     name: baseline

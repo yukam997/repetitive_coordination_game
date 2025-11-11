@@ -22,10 +22,10 @@ export function Choice() {
           The baseline cost for each parking spot is written on the diagram above.
         </li>
         <li>
-          If you both select the same spot, your cost will <strong>increase by 10 points</strong>.
+          If you both select the same spot, you will be penalized, <strong>increasing your cost by 30 points</strong>.
         </li>
         <li>
-          If you both select different spots of the same color, your cost will be <strong>reduced by 10 points</strong>.
+          If you both select different spots of the same color, you will receive a group discount, <strong>decreasing your cost by 10 points</strong>.
         </li>
 
       </ul>

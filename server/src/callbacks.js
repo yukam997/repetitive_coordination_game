@@ -40,7 +40,7 @@ Empirica.onStageEnded(({ stage }) => {
       score = 11;
     }
     if (playerChoice === partnerChoice) {
-      score += 10;
+      score += 30;
     }
 
     if ((playerChoice === "A" && partnerChoice === "B")||(playerChoice === "B" && partnerChoice === "A")||
