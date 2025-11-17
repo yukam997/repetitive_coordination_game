@@ -7,8 +7,8 @@ factors:
     name: numRounds
     values:
       - value: 13
-  - desc: hasChat
-    name: hasChat
+  - desc: chatEnabled
+    name: chatEnabled
     values:
       - value: false
 treatments:
@@ -16,5 +16,5 @@ treatments:
     factors:
       playerCount: 2
       numRounds: 13
-      hasChat: false
+      chatEnabled: false
     name: baseline
